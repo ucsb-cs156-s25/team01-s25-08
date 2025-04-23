@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-08
 owner: ucsb-cs156-s25
 repo_name: team01-s25-08
-pull_requests: [{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"Nathan-HelpRequest-create-db","number":43,"title":"Creating database for help requests","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/43"}]
+pull_requests: [{"author":{"id":"U_kgDOB96_2w","is_bot":false,"login":"hannuhsu","name":"Hannah Su"},"headRefName":"Hannah-ReqRequestTable","number":44,"title":"Create database table for UCSBOrganization","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/44"},{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"Nathan-HelpRequest-create-db","number":43,"title":"Creating database for help requests","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/43"}]

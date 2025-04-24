@@ -424,7 +424,7 @@ jobs:
           slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
           slack-channel: ${{ fromJSON(env.TEAM_TO_CHANNEL)[needs.get_team_name.outputs.team] }}
           slack-text: |
-            📋 *Kanban Board Status* ✔️
+            📋 *Kanban Board Status* ✔️ (${{ github.event.repository.name }})
             ```
             ${{ env.ascii_table_content }}
             ```

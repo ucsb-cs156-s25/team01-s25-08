@@ -9,6 +9,4 @@ import org.springframework.stereotype.Repository;
  * The UCSBDiningCommonsRepository is a repository for UCSBDiningCommons entities
  */
 @Repository
-public interface UCSBDiningCommonsRepository extends CrudRepository<UCSBDiningCommons, Long> {
- 
-}
+public interface UCSBDiningCommonsRepository extends CrudRepository<UCSBDiningCommons, Long> { }

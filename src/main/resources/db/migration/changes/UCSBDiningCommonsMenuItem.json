@@ -12,7 +12,7 @@
               "not": [
                 {
                   "tableExists": {
-                    "tableName": "UCSBDATES"
+                    "tableName": "UCSBDININGCOMMONSMENUITEM"
                   }
                 }
               ]
@@ -27,7 +27,7 @@
                       "autoIncrement": true,
                       "constraints": {
                         "primaryKey": true,
-                        "primaryKeyName": "UCSBDiningCommonsMenuItem_PK"
+                        "primaryKeyName": "UCSBDININGCOMMONSMENUITEM_PK"
                       },
                       "name": "ID",
                       "type": "BIGINT"
@@ -36,23 +36,23 @@
                   {
                     "column": {
                       "name": "diningCommonsCode",
-                      "type": "CODE"
+                      "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
                       "name": "name",
-                      "type": "string"
+                      "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
                       "name": "station",
-                      "type": "LOCALDATETIME"
+                      "type": "TIMESTAMP"
                     }
                   }
                 ],
-                "tableName": "UCSBDiningCommonsMenuItem"
+                "tableName": "UCSBDININGCOMMONSMENUITEM"
               }
             }
           ]

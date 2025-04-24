@@ -28,5 +28,5 @@ public class UCSBDiningCommonsMenuItem {
 
   private String diningCommonsCode;
   private String name;
-  private LocalDateTime station;
+  private String station;
 }

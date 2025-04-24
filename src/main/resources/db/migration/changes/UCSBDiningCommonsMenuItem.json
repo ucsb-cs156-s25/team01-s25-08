@@ -48,7 +48,7 @@
                   {
                     "column": {
                       "name": "station",
-                      "type": "TIMESTAMP"
+                      "type": "VARCHAR(255)"
                     }
                   }
                 ],

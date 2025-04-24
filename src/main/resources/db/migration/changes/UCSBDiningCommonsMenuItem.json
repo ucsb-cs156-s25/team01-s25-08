@@ -35,19 +35,19 @@
                   },
                   {
                     "column": {
-                      "name": "diningCommonsCode",
+                      "name": "DININGCOMMONSCODE",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "name",
+                      "name": "NAME",
                       "type": "VARCHAR(255)"
                     }
                   },
                   {
                     "column": {
-                      "name": "station",
+                      "name": "STATION",
                       "type": "VARCHAR(255)"
                     }
                   }

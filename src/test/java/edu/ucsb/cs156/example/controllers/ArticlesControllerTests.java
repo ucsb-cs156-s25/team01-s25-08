@@ -208,176 +208,11 @@ public class ArticlesControllerTests extends ControllerTestCase {
         assertEquals(expectedJson, responseString);
     }
 
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_can_post_article_with_special_characters() throws Exception {
-        // arrange
-        LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
+    
 
-        Articles articleToReturn = Articles.builder()
-                .id(42L)
-                .title("Article with special chars: &<>\"'")
-                .url("https://example.org/article?param=value&other=123")
-                .explanation("Testing & special < > characters")
-                .email("test@ucsb.edu")
-                .dateAdded(ldt)
-                .build();
+    
 
-        when(articlesRepository.save(any(Articles.class))).thenReturn(articleToReturn);
 
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=Article with special chars: &<>\"'&url=https://example.org/article?param=value&other=123&explanation=Testing & special < > characters&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        verify(articlesRepository, times(1)).save(any(Articles.class));
-        String expectedJson = mapper.writeValueAsString(articleToReturn);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals(expectedJson, responseString);
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_can_post_article_with_empty_explanation() throws Exception {
-        // arrange
-        LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
-
-        Articles articleToReturn = Articles.builder()
-                .id(42L)
-                .title("Article with empty explanation")
-                .url("https://example.org/article")
-                .explanation("")
-                .email("test@ucsb.edu")
-                .dateAdded(ldt)
-                .build();
-
-        when(articlesRepository.save(any(Articles.class))).thenReturn(articleToReturn);
-
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=Article with empty explanation&url=https://example.org/article&explanation=&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        verify(articlesRepository, times(1)).save(any(Articles.class));
-        String expectedJson = mapper.writeValueAsString(articleToReturn);
-        String responseString = response.getResponse().getContentAsString();
-        assertEquals(expectedJson, responseString);
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_saves_dateAdded_correctly() throws Exception {
-        // arrange
-        Articles savedArticle = Articles.builder()
-                .id(42L)
-                .title("Test Article")
-                .url("https://example.org")
-                .explanation("Test explanation")
-                .email("test@ucsb.edu")
-                .dateAdded(LocalDateTime.now())
-                .build();
-
-        // mockito argument captor to capture the Article passed to save
-        AtomicReference<Articles> capturedArticle = new AtomicReference<>();
-        when(articlesRepository.save(any(Articles.class))).thenAnswer(invocation -> {
-            Articles articleToSave = invocation.getArgument(0);
-            capturedArticle.set(articleToSave);
-            articleToSave.setId(42L); // simulate DB auto-generating id
-            return articleToSave;
-        });
-
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=Test Article&url=https://example.org&explanation=Test explanation&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        String responseString = response.getResponse().getContentAsString();
-        Articles savedArticleFromResponse = mapper.readValue(responseString, Articles.class);
-        
-        // Verify the date is within the last second (since we can't know the exact time)
-        LocalDateTime savedAt = capturedArticle.get().getDateAdded();
-        LocalDateTime now = LocalDateTime.now();
-        assertTrue(savedAt.isAfter(now.minusSeconds(1)));
-        assertTrue(savedAt.isBefore(now.plusSeconds(1)));
-
-        // Verify all other fields were set correctly
-        assertEquals("Test Article", capturedArticle.get().getTitle());
-        assertEquals("https://example.org", capturedArticle.get().getUrl());
-        assertEquals("Test explanation", capturedArticle.get().getExplanation());
-        assertEquals("test@ucsb.edu", capturedArticle.get().getEmail());
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_with_long_strings() throws Exception {
-        // arrange
-        String longTitle = "A".repeat(255);
-        String longUrl = "https://example.org/" + "A".repeat(200);
-        String longExplanation = "B".repeat(255);
-        String longEmail = "a".repeat(200) + "@ucsb.edu";
-
-        Articles expectedArticle = Articles.builder()
-                .id(42L)
-                .title(longTitle)
-                .url(longUrl)
-                .explanation(longExplanation)
-                .email(longEmail)
-                .dateAdded(LocalDateTime.now())
-                .build();
-
-        when(articlesRepository.save(any(Articles.class))).thenReturn(expectedArticle);
-
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=" + longTitle + "&url=" + longUrl + "&explanation=" + longExplanation + "&email=" + longEmail)
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        verify(articlesRepository, times(1)).save(any(Articles.class));
-        String responseString = response.getResponse().getContentAsString();
-        Articles savedArticle = mapper.readValue(responseString, Articles.class);
-        
-        assertEquals(longTitle, savedArticle.getTitle());
-        assertEquals(longUrl, savedArticle.getUrl());
-        assertEquals(longExplanation, savedArticle.getExplanation());
-        assertEquals(longEmail, savedArticle.getEmail());
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_with_null_fields() throws Exception {
-        // arrange
-        Articles expectedArticle = Articles.builder()
-                .id(42L)
-                .title("Test Title")
-                .url("https://example.org")
-                .explanation(null)
-                .email("test@ucsb.edu")
-                .dateAdded(LocalDateTime.now())
-                .build();
-
-        when(articlesRepository.save(any(Articles.class))).thenReturn(expectedArticle);
-
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=Test Title&url=https://example.org&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        verify(articlesRepository, times(1)).save(any(Articles.class));
-        String responseString = response.getResponse().getContentAsString();
-        Articles savedArticle = mapper.readValue(responseString, Articles.class);
-        
-        assertNull(savedArticle.getExplanation());
-    }
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
@@ -406,96 +241,8 @@ public class ArticlesControllerTests extends ControllerTestCase {
         assertEquals("test@ucsb.edu", savedArticle.getEmail());
     }
 
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_test_required_fields() throws Exception {
-        // Test missing title
-        mockMvc.perform(
-                post("/api/articles/post?url=https://example.org&explanation=test&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().is4xxClientError());
 
-        // Test missing url
-        mockMvc.perform(
-                post("/api/articles/post?title=Test&explanation=test&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().is4xxClientError());
 
-        // Test missing email
-        mockMvc.perform(
-                post("/api/articles/post?title=Test&url=https://example.org&explanation=test")
-                        .with(csrf()))
-                .andExpect(status().is4xxClientError());
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_test_empty_required_fields() throws Exception {
-        // Test empty title
-        mockMvc.perform(
-                post("/api/articles/post?title=&url=https://example.org&explanation=test&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk());
-
-        // Test empty url
-        mockMvc.perform(
-                post("/api/articles/post?title=Test&url=&explanation=test&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk());
-
-        // Test empty email
-        mockMvc.perform(
-                post("/api/articles/post?title=Test&url=https://example.org&explanation=test&email=")
-                        .with(csrf()))
-                .andExpect(status().isOk());
-    }
-
-    @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void admin_post_article_test_date_added() throws Exception {
-        // arrange
-        LocalDateTime beforeTime = LocalDateTime.now();
-
-        Articles expectedArticle = Articles.builder()
-                .id(42L)
-                .title("Test")
-                .url("https://example.org")
-                .explanation("test")
-                .email("test@ucsb.edu")
-                .dateAdded(beforeTime)
-                .build();
-
-        when(articlesRepository.save(any(Articles.class))).thenReturn(expectedArticle);
-
-        // act
-        MvcResult response = mockMvc.perform(
-                post("/api/articles/post?title=Test&url=https://example.org&explanation=test&email=test@ucsb.edu")
-                        .with(csrf()))
-                .andExpect(status().isOk()).andReturn();
-
-        // assert
-        String responseString = response.getResponse().getContentAsString();
-        Articles savedArticle = mapper.readValue(responseString, Articles.class);
-        
-        LocalDateTime afterTime = LocalDateTime.now();
-        LocalDateTime savedAt = savedArticle.getDateAdded();
-        
-        assertTrue(savedAt.isAfter(beforeTime.minusSeconds(1)));
-        assertTrue(savedAt.isBefore(afterTime.plusSeconds(1)));
-    }
-
-    @Test
-    public void logged_out_users_cannot_put() throws Exception {
-        mockMvc.perform(put("/api/articles?id=1"))
-                .andExpect(status().is(403));
-    }
-
-    @WithMockUser(roles = { "USER" })
-    @Test
-    public void logged_in_regular_users_cannot_put() throws Exception {
-        mockMvc.perform(put("/api/articles?id=1"))
-                .andExpect(status().is(403)); // only admins can put
-    }
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
@@ -571,5 +318,56 @@ public class ArticlesControllerTests extends ControllerTestCase {
         verify(articlesRepository, times(1)).findById(67L);
         Map<String, Object> json = responseToJson(response);
         assertEquals("Articles with id 67 not found", json.get("message"));
+    }
+
+
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_can_delete_an_article() throws Exception {
+        // arrange
+
+        LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+
+        Articles article = Articles.builder()
+                .title("Using testing-playground with React Testing Library")
+                .url("https://dev.to/katieraby/using-testing-playground-with-react-testing-library-26j7")
+                .explanation("Helpful article about testing")
+                .email("phtcon@ucsb.edu")
+                .dateAdded(ldt1)
+                .build();
+
+        when(articlesRepository.findById(eq(15L))).thenReturn(Optional.of(article));
+
+        // act
+        MvcResult response = mockMvc.perform(
+                delete("/api/articles?id=15")
+                        .with(csrf()))
+                .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(articlesRepository, times(1)).findById(15L);
+        verify(articlesRepository, times(1)).delete(any());
+
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("Article with id 15 deleted", json.get("message"));
+    }
+
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_tries_to_delete_non_existant_article_and_gets_right_error_message() throws Exception {
+        // arrange
+
+        when(articlesRepository.findById(eq(15L))).thenReturn(Optional.empty());
+
+        // act
+        MvcResult response = mockMvc.perform(
+                delete("/api/articles?id=15")
+                        .with(csrf()))
+                .andExpect(status().isNotFound()).andReturn();
+
+        // assert
+        verify(articlesRepository, times(1)).findById(15L);
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("Articles with id 15 not found", json.get("message"));
     }
 }

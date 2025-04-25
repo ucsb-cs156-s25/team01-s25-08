@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-08
 owner: ucsb-cs156-s25
 repo_name: team01-s25-08
-pull_requests: [{"author":{"id":"U_kgDOB7-7uA","is_bot":false,"login":"selenazeng1","name":"Selena Zeng"},"headRefName":"sz-Articles-create-controller","number":50,"title":"Create Articles controller","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/50"},{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"NA-HelpRequest-Get","number":49,"title":"NA-HelpRequest-Controller Get","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/49"}]
+pull_requests: [{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"NA-HelpRequest-Get","number":49,"title":"NA-HelpRequest-Controller Get","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/49"}]

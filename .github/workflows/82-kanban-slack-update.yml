@@ -5,7 +5,8 @@ name: "82-kanban-slack-update.yml"
 
 on:
   schedule:
-    - cron: "0 0,4 * * *"  # 0,4 UTC are 4pm, 8pm Pacific Time
+    - cron: "0 0,4 * * 3-5"  # 0,4 UTC are 4pm, 8pm Pacific Standard Time on T W R
+    - cron: "0 0 * * 1,2,6,0" # runs at 4pm on M F SS
   workflow_dispatch:  # Allows manual triggering
 
 env:
@@ -15,7 +16,8 @@ env:
   REPO_NAME: ${{ github.event.repository.name }}
   # The columns in the Kanban board that we are interested in
   COLUMNS: "Todo, In Progress, In Review, Done"
-  END_DATE: "2025-05-01"  # Set the end date for the workflow
+  START_DATE: "2025-04-01"
+  END_DATE: "2025-04-29"  # Set the end date for the workflow
 
 jobs:
 
@@ -31,6 +33,8 @@ jobs:
         run: |
           current_date=$(date +%Y-%m-%d)
           end_date="${{ env.END_DATE }}"
+          start_date="${{ env.START_DATE }}"
+          
           if [[ "$current_date" > "$end_date" ]]; then
             echo "Current date is after $end_date. Stopping workflow."
             echo "continue=false" >> "$GITHUB_OUTPUT"
@@ -38,6 +42,11 @@ jobs:
             echo "Current date is before $end_date. Continuing workflow."
             echo "continue=true" >> "$GITHUB_OUTPUT"
           fi
+          if [[ "$current_date" < "$start_date" ]]; then
+            echo "Current date is before $start_date. Stopping workflow."
+            echo "continue=false" >> "$GITHUB_OUTPUT"
+          fi
+          
           OWNER=${{ github.repository_owner }}
           OWNER_PLUS_REPOSITORY=${{github.repository}}
           REPOSITORY=${OWNER_PLUS_REPOSITORY/$OWNER\//}  

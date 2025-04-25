@@ -56,10 +56,10 @@ public class MenuItemReviewController extends ApiController {
     /**
      * Create a new menu item review
      * 
-     * @param itemID            the item ID
+     * @param itemId            the item ID
      * @param reviewerEmail     the email of the reviewer
      * @param stars             number of stars of review
-     * @param localDateTime     the date
+     * @param dateReviewed      the date
      * @param comments          comments of the review
      * @return the saved menu item review
      */

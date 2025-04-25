@@ -41,7 +41,7 @@
                   },
                   {
                     "column": {
-                      "name": "REVIEW_EMAIL",
+                      "name": "REVIEWER_EMAIL",
                       "type": "VARCHAR(255)"
                     }
                   },

@@ -76,7 +76,7 @@ public class HelpRequestsController extends ApiController {
      * @param requesterEmail        the email of the requester
      * @param teamId                the ID of the team of the requester 
      * @param tableOrBreakoutRoom   the table of the requester
-     * @param requestTime         the time of the request
+     * @param requestTime           the time of the request
      * @param explanation           the explanation of the request
      * @param solved                whether or not the request is solved
      * @return the saved help request
@@ -109,5 +109,34 @@ public class HelpRequestsController extends ApiController {
         HelpRequest savedHelpRequest = helpRequestRepository.save(helpRequest);
 
         return savedHelpRequest;
+    }
+
+    /**
+     * Update a single request
+     * 
+     * @param id       id of the request to update
+     * @param incoming the new request
+     * @return the updated request object
+     */
+    @Operation(summary= "Update a single request")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public HelpRequest updateHelpRequest(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid HelpRequest incoming) {
+
+        HelpRequest helpRequest = helpRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+
+        helpRequest.setRequesterEmail(incoming.getRequesterEmail());
+        helpRequest.setTeamId(incoming.getTeamId());
+        helpRequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());
+        helpRequest.setRequestTime(incoming.getRequestTime());
+        helpRequest.setExplanation(incoming.getExplanation());
+        helpRequest.setSolved(incoming.getSolved());
+
+        helpRequestRepository.save(helpRequest);
+
+        return helpRequest;
     }
 }

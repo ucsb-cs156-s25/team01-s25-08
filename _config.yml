@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-08
 owner: ucsb-cs156-s25
 repo_name: team01-s25-08
-pull_requests: [{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"NA-HelpRequest-createController-db","number":47,"title":"Creating helprequest controller with tests and fixing database structure","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/47"}]
+pull_requests: []

@@ -76,7 +76,7 @@ import java.time.LocalDateTime;
      * @param requesterEmail        the email of the requester
      * @param teamId                the ID of the team of the requester 
      * @param tableOrBreakoutRoom   the table of the requester
-     * @param requestTime         the time of the request
+     * @param requestTime           the time of the request
      * @param explanation           the explanation of the request
      * @param solved                whether or not the request is solved
      * @return the saved help request
@@ -109,6 +109,35 @@ import java.time.LocalDateTime;
 <span class="fc" id="L109">        HelpRequest savedHelpRequest = helpRequestRepository.save(helpRequest);</span>
 
 <span class="fc" id="L111">        return savedHelpRequest;</span>
+    }
+
+    /**
+     * Update a single request
+     * 
+     * @param id       id of the request to update
+     * @param incoming the new request
+     * @return the updated request object
+     */
+    @Operation(summary= &quot;Update a single request&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @PutMapping(&quot;&quot;)
+    public HelpRequest updateHelpRequest(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid HelpRequest incoming) {
+
+<span class="fc" id="L128">        HelpRequest helpRequest = helpRequestRepository.findById(id)</span>
+<span class="fc" id="L129">                .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));</span>
+
+<span class="fc" id="L131">        helpRequest.setRequesterEmail(incoming.getRequesterEmail());</span>
+<span class="fc" id="L132">        helpRequest.setTeamId(incoming.getTeamId());</span>
+<span class="fc" id="L133">        helpRequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());</span>
+<span class="fc" id="L134">        helpRequest.setRequestTime(incoming.getRequestTime());</span>
+<span class="fc" id="L135">        helpRequest.setExplanation(incoming.getExplanation());</span>
+<span class="fc" id="L136">        helpRequest.setSolved(incoming.getSolved());</span>
+
+<span class="fc" id="L138">        helpRequestRepository.save(helpRequest);</span>
+
+<span class="fc" id="L140">        return helpRequest;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

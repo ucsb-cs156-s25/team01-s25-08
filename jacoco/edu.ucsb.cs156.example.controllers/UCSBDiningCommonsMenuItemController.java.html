@@ -73,5 +73,22 @@ import java.time.LocalDateTime;
 
 <span class="fc" id="L74">        return savedUcsbDiningCommonsMenuItem;</span>
     }
+
+    /**
+     * Get a single menu item by id
+     * 
+     * @param id the id of the menu item
+     * @return a UCSBDiningCommonsMenuItem
+     */
+    @Operation(summary= &quot;Get a single menu item by ID&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public UCSBDiningCommonsMenuItem getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L88">        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L89">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDate.class, id));</span>
+
+<span class="fc" id="L91">        return ucsbDiningCommonsMenuItem;</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

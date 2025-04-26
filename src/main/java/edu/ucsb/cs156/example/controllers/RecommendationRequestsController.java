@@ -2,6 +2,8 @@ package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.RecommendationRequest;
 import edu.ucsb.cs156.example.repositories.RecommendationRequestRepository;
+import edu.ucsb.cs156.example.errors.EntityNotFoundException;
+
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,5 +65,22 @@ public class RecommendationRequestsController extends ApiController {
             .build();
 
         return recommendationRequestRepository.save(req);
+    }
+
+    /**
+     * Get a single recommendationrequest by id
+     * 
+     * @param id the id of the recommendationrequest
+     * @return a RecommendationRequest
+     */
+    @Operation(summary= "Get a single RecommendationRequest")
+    @PreAuthorize("hasRole('USER')")
+    @GetMapping("")
+    public RecommendationRequest getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        RecommendationRequest recommendationrequest  = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        return recommendationrequest;
     }
 }

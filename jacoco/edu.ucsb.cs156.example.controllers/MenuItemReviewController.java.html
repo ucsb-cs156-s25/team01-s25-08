@@ -109,6 +109,24 @@ import java.time.LocalDateTime;
     }
 
     /**
+     * Delete a MenuItemReview
+     * 
+     * @param id the id of the MenuItemReview to delete
+     * @return a message indicating the MenuItemReview was deleted
+     */
+    @Operation(summary= &quot;Delete a MenuItemReview&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteMenuItemReview(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L122">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L123">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L125">        menuItemReviewRepository.delete(menuItemReview);</span>
+<span class="fc" id="L126">        return genericMessage(&quot;MenuItemReview with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    /**
      * Update a single menu item review
      * 
      * @param id       id of the menu item review to update
@@ -122,19 +140,19 @@ import java.time.LocalDateTime;
             @Parameter(name=&quot;id&quot;) @RequestParam Long id,
             @RequestBody @Valid MenuItemReview incoming) {
 
-<span class="fc" id="L125">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
-<span class="fc" id="L126">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+<span class="fc" id="L143">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L144">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
 
 
-<span class="fc" id="L129">        menuItemReview.setItemId(incoming.getItemId());</span>
-<span class="fc" id="L130">        menuItemReview.setReviewerEmail(incoming.getReviewerEmail());</span>
-<span class="fc" id="L131">        menuItemReview.setStars(incoming.getStars());</span>
-<span class="fc" id="L132">        menuItemReview.setDateReviewed(incoming.getDateReviewed());</span>
-<span class="fc" id="L133">        menuItemReview.setComments(incoming.getComments());</span>
+<span class="fc" id="L147">        menuItemReview.setItemId(incoming.getItemId());</span>
+<span class="fc" id="L148">        menuItemReview.setReviewerEmail(incoming.getReviewerEmail());</span>
+<span class="fc" id="L149">        menuItemReview.setStars(incoming.getStars());</span>
+<span class="fc" id="L150">        menuItemReview.setDateReviewed(incoming.getDateReviewed());</span>
+<span class="fc" id="L151">        menuItemReview.setComments(incoming.getComments());</span>
 
-<span class="fc" id="L135">        menuItemReviewRepository.save(menuItemReview);</span>
+<span class="fc" id="L153">        menuItemReviewRepository.save(menuItemReview);</span>
 
-<span class="fc" id="L137">        return menuItemReview;</span>
+<span class="fc" id="L155">        return menuItemReview;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

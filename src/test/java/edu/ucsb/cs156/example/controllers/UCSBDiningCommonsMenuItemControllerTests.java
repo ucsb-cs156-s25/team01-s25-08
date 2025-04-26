@@ -96,10 +96,10 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                             .station("General Tso")
                             .build();
 
-            ArrayList<UCSBDiningCommonsMenuItem> expetedDiningCommonsMenuItem = new ArrayList<>();
-            expetedDiningCommonsMenuItem.addAll(Arrays.asList(ucsbDiningCommonsMenuItem1, ucsbDiningCommonsMenuItem2));
+            ArrayList<UCSBDiningCommonsMenuItem> expectedDiningCommonsMenuItem = new ArrayList<>();
+            expectedDiningCommonsMenuItem.addAll(Arrays.asList(ucsbDiningCommonsMenuItem1, ucsbDiningCommonsMenuItem2));
 
-            when(ucsbDiningCommonsMenuItemRepository.findAll()).thenReturn(expetedDiningCommonsMenuItem);
+            when(ucsbDiningCommonsMenuItemRepository.findAll()).thenReturn(expectedDiningCommonsMenuItem);
 
             // act
             MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem/all"))
@@ -108,7 +108,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
             // assert
 
             verify(ucsbDiningCommonsMenuItemRepository, times(1)).findAll();
-            String expectedJson = mapper.writeValueAsString(expetedDiningCommonsMenuItem);
+            String expectedJson = mapper.writeValueAsString(expectedDiningCommonsMenuItem);
             String responseString = response.getResponse().getContentAsString();
             assertEquals(expectedJson, responseString);
     }

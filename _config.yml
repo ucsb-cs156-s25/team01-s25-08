@@ -23,4 +23,4 @@ repo_name: "TBD"
 repo: ucsb-cs156-s25/team01-s25-08
 owner: ucsb-cs156-s25
 repo_name: team01-s25-08
-pull_requests: [{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"NA-HelpRequest-add-controller-delete","number":58,"title":"NA-HelpRequest adding controller delete","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/58"},{"author":{"id":"MDQ6VXNlcjgwNjE0Mzg1","is_bot":false,"login":"giozucca","name":""},"headRefName":"gl-UCSBDiningCommonsController","number":57,"title":"Add UCSBDiningCommonsMenuItemController with authorization and tests","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/57"}]
+pull_requests: [{"author":{"id":"U_kgDOCu9O7Q","is_bot":false,"login":"nathanalexander626","name":"Nathan Alexander"},"headRefName":"NA-HelpRequest-add-controller-delete","number":58,"title":"NA-HelpRequest adding controller delete","url":"https://github.com/ucsb-cs156-s25/team01-s25-08/pull/58"}]

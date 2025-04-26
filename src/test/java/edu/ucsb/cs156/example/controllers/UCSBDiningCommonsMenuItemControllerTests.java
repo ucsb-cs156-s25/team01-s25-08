@@ -143,7 +143,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
     @Test
     public void logged_out_user_can_not_get_one_menu_item_by_ID() throws Exception {
-        mockMvc.perform(post("api/ucsbdiningcommonsmenuitem?id=1"))
+        mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=1"))
         .andExpect(status().is(403)); // forbidden
     }
 
@@ -175,7 +175,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
     @Test
     public void logged_in_user_gets_error_with_invalid_ID() throws Exception {
         // we try to get a menu item by id, but since we are only a user, we can't have 
-        mockMvc.perform(post("api/ucsbdiningcommonsmenuitem?id=1"))
+        mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=1"))
                             .andExpect(status().is(404));
     }
 

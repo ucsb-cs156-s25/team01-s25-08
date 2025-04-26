@@ -27,8 +27,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 
-import java.time.LocalDateTime;
-
 /**
  * This is a REST controller for UCSBDiningCommonsMenuItem
  */
@@ -90,4 +88,49 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
 
         return ucsbDiningCommonsMenuItem;
     }
+
+    /**
+     * Update a single menu item
+     * 
+     * @param id       id of the menu item to update
+     * @param incoming the new menu item
+     * @return the updated menu item object
+     */
+    @Operation(summary= "Update a single menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public UCSBDiningCommonsMenuItem updateUcsbDiningCommonsMenuItem(
+            @Parameter(name="id") @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonsMenuItem incoming) {
+
+        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItem.setDiningCommonsCode(incoming.getDiningCommonsCode());
+        ucsbDiningCommonsMenuItem.setName(incoming.getName());
+        ucsbDiningCommonsMenuItem.setStation(incoming.getStation());
+
+        ucsbDiningCommonsMenuItemRepository.save(ucsbDiningCommonsMenuItem);
+
+        return ucsbDiningCommonsMenuItem;
+    }
+
+    /**
+     * Delete a UCSBDiningCommonsMenuItem
+     * 
+     * @param id the id of the menu item to delete
+     * @return a message indicating the menu item was deleted
+     */
+    @Operation(summary= "Delete a UCSBDiningCommonsMenuItem")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteUCSBDiningCommonsMenuItem(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonsMenuItem.class, id));
+
+        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonsMenuItem);
+        return genericMessage("UCSBDiningCommonsMenuItem with id %s deleted".formatted(id));
+    }
+  
 }

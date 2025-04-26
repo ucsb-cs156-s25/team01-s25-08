@@ -42,7 +42,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
-    @Operation(summary= "List all ucsb dates")
+    @Operation(summary= "List all UCSB Dining Commons Menu Items")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonsMenuItem> allUCSBDiningCommonsMenuItems() {
@@ -50,6 +50,8 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
         return items;
     }
 
+    @Operation(summary= "Create a new Menu Item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonsMenuItem postUcsbDiningCommonsMenuItem(
             @Parameter(name="diningCommonsCode") @RequestParam String diningCommonsCode,

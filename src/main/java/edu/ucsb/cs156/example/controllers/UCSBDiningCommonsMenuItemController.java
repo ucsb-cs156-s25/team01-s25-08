@@ -80,7 +80,7 @@ public class UCSBDiningCommonsMenuItemController extends ApiController{
      * @param id the id of the menu item
      * @return a UCSBDate
      */
-    @Operation(summary= "Get a single menu item")
+    @Operation(summary= "Get a single menu item by ID")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public UCSBDiningCommonsMenuItem getById(

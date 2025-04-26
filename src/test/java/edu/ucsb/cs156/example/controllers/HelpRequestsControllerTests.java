@@ -207,6 +207,58 @@ public class HelpRequestsControllerTests extends ControllerTestCase {
 
         @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
+        public void admin_can_delete_a_request() throws Exception {
+                // arrange
+
+                LocalDateTime rt = LocalDateTime.parse("2003-06-26T09:00:00");
+
+                HelpRequest helpRequest = HelpRequest.builder()
+                                .requesterEmail("818@ucsb.edu")
+                                .teamId("694")
+                                .tableOrBreakoutRoom("694")
+                                .requestTime(rt)
+                                .explanation("lack of swag")
+                                .solved(false)
+                                .build();
+
+                when(helpRequestRepository.findById(eq(123L))).thenReturn(Optional.of(helpRequest));
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/helprequests?id=123")
+                                                .with(csrf()))
+                                .andExpect(status().isOk()).andReturn();
+
+                // assert
+                verify(helpRequestRepository, times(1)).findById(123L);
+                verify(helpRequestRepository, times(1)).delete(any());
+
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("HelpRequest with id 123 deleted", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
+        public void admin_tries_to_delete_non_existant_helprequest_and_gets_right_error_message()
+                        throws Exception {
+                // arrange
+
+                when(helpRequestRepository.findById(eq(123L))).thenReturn(Optional.empty());
+
+                // act
+                MvcResult response = mockMvc.perform(
+                                delete("/api/helprequests?id=123")
+                                                .with(csrf()))
+                                .andExpect(status().isNotFound()).andReturn();
+
+                // assert
+                verify(helpRequestRepository, times(1)).findById(123L);
+                Map<String, Object> json = responseToJson(response);
+                assertEquals("HelpRequest with id 123 not found", json.get("message"));
+        }
+
+        @WithMockUser(roles = { "ADMIN", "USER" })
+        @Test
         public void admin_can_edit_an_existing_helprequest() throws Exception {
                 // arrange
 

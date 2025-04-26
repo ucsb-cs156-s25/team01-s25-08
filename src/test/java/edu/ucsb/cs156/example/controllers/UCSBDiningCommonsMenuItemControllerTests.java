@@ -141,5 +141,42 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
             assertEquals(expectedJson, responseString);
     }
 
+    @Test
+    public void logged_out_user_can_not_get_one_menu_item_by_ID() throws Exception {
+        mockMvc.perform(post("api/ucsbdiningcommonsmenuitem?id=1"))
+        .andExpect(status().is(403)); // forbidden
+    }
+
+    @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+        
+                
+                UCSBDiningCommonsMenuItem ucsbDiningCommonsMenuItem = UCSBDiningCommonsMenuItem.builder()
+                                .diningCommonsCode("codex")
+                                .name("portola")
+                                .station("thebrick")
+                                .build();
+        
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(1L))).thenReturn(Optional.of(ucsbDiningCommonsMenuItem));
+        
+                // act
+                MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=1"))
+                                .andExpect(status().isOk()).andReturn();
+        
+                // assert
+        
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(eq(1L));
+                String expectedJson = mapper.writeValueAsString(ucsbDiningCommonsMenuItem);
+                String responseString = response.getResponse().getContentAsString();
+                assertEquals(expectedJson, responseString);
+        }
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void logged_in_user_gets_error_with_invalid_ID() throws Exception {
+        // we try to get a menu item by id, but since we are only a user, we can't have 
+        mockMvc.perform(post("api/ucsbdiningcommonsmenuitem?id=1"))
+                            .andExpect(status().is(404));
+    }
 
 }

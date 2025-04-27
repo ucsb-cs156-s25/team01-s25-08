@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import java.time.LocalDateTime;
 
@@ -111,5 +112,24 @@ public class RecommendationRequestsController extends ApiController {
         req.setDone(incoming.getDone());
 
         return recommendationRequestRepository.save(req);
+    }
+
+    /**
+     * Delete a RecommendationRequest
+     *
+     * @param id the id of the recommendation request to delete
+     * @return a message indicating the request was deleted
+     */
+    @Operation(summary = "Delete a recommendation request")
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("")
+    public Object deleteRecommendationRequest(
+            @Parameter(name="id") @RequestParam Long id) {
+
+        RecommendationRequest req = recommendationRequestRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(RecommendationRequest.class, id));
+
+        recommendationRequestRepository.delete(req);
+        return genericMessage("RecommendationRequest with id %s deleted".formatted(id));
     }
 }
